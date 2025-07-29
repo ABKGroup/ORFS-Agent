@@ -45,7 +45,6 @@ The ORFS-Agent consists of several key components:
 - **Adaptive Parameter Exploration**: LLM-guided parameter space exploration with constraint handling
 - **Multiple PDK Support**: Supports ASAP7 and Sky130HD process design kits
 - **Circuit Flexibility**: Works with various circuits including AES, IBEX, and JPEG
-- **Resource Management**: Intelligent CPU and memory allocation for parallel runs
 
 ## Environment Setup
 
@@ -196,4 +195,4 @@ This work is based on the research paper:
 *Amur Ghose, Andrew B. Kahng, Sayak Kundu, and Zhiang Wang*  
 University of California San Diego  
 arXiv:2506.08332v1 [cs.AI] 12 Jun 2025  
-Available at: https://arxiv.org/html/2506.08332v1
+Available at: https://arxiv.org/pdf/2506.08332

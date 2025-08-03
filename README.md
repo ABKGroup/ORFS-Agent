@@ -93,9 +93,9 @@ sudo apt-get install jq bc timeout
 
 First, modify your OpenROAD Makefile to support parallel runs:
 
-- Replace single `DESIGN_CONFIG` with multiple parametrized configurations
-- Add `INT_PARAM` support for parallel execution
-- Use the provided [Makefile](./Makefile) as reference for required changes
+- Replace single `DESIGN_CONFIG` with multiple parametrized configurations. Instead of a single `config.mk`, the flow uses `config_{INT_PARAM}.mk` to enable parallel runs.
+- Add `INT_PARAM` support for parallel execution.
+- Use the provided [Makefile](./Makefile) as a reference for required changes.
 
 ### 2. Parameter Configuration
 
@@ -123,7 +123,21 @@ Example configuration structure:
 }
 ```
 
-### 3. Resource Planning
+### 3. Design-Specific Configuration
+
+Before running an optimization, you may need to adjust the `config.mk` file for your chosen design, as the default files may not define all tunable parameters.
+
+- **Placement Density**: The `PLACE_DENSITY` variable in some `config.mk` files must be replaced with `LB_ADDON_PLACE_DENSITY`. Use the following values:
+  - **(aes, asap7)**: 0.3913  
+  - **(aes, sky130hd)**: 0.4936  
+  - **(ibex, sky130hd)**: 0.2  
+  - **(ibex, asap7)**: 0.2  
+  - **(jpeg, sky130hd)**: 0.15  
+  - **(jpeg, asap7)**: 0.4127
+
+- **TCL Scripts**: Ensure you are using the provided custom TCL scripts (`fastasap.tcl`, `fastsky.tcl`). You must link these in the `config.mk` file for your design. Refer to the example configuration changes in `exampleaes/configchanges.mk` for guidance.
+
+### 4. Resource Planning
 
 Configure resource allocation in `maindriver.sh`:
 
@@ -133,7 +147,20 @@ PARALLEL_RUNS=50     # Parallel runs per iteration
 TIMEOUT="45m"        # Timeout per run
 TOTAL_CPUS=110       # Total available vCPUs
 TOTAL_RAM=220        # Total available RAM (GB)
+ECP_WEIGHT=0.5       # Weight for ECP in the final objective
+WL_WEIGHT=0.5        # Weight for Wirelength in the final objective
+ECP_WEIGHT_SURROGATE=0.5 # Weight for post-CTS ECP in the surrogate model
+WL_WEIGHT_SURROGATE=0.5  # Weight for post-CTS WL in the surrogate model
 ```
+
+### 5. API Key Setup
+
+The agent requires API keys for LLM providers. You will need to add them directly into the source code:
+
+- **Anthropic API Key**: In `optimize.py`, find the placeholder for the Anthropic API key and insert your key.
+- **OpenAI API Key**: In `prompts.py`, find the placeholder for the OpenAI API key and insert your key. This is required for prompt generation functionalities.
+
+**Note**: For improved security, consider modifying the scripts to load keys from environment variables using the `python-dotenv` package.
 
 ## Running the Optimization
 
@@ -196,3 +223,11 @@ This work is based on the research paper:
 University of California San Diego  
 arXiv:2506.08332v1 [cs.AI] 12 Jun 2025  
 Available at: https://arxiv.org/pdf/2506.08332
+
+## Additional versions
+
+For the purposes of replication or usage, you may be interested in using this as a flow within OR-AutoTuner, OpenROAD's official BO tool.
+
+Look within the AutoTuner-integration folder for an example of this. Within the ORFS-with-AutoTuner subdirectory, a more streamlined version of ORFS-agent appears in orfs_agent.py, which can be useful if you wish to run your experiments with a restrictive time and/or token budget.
+
+Note that the results of the original paper were obtained with Claude-3.5 Sonnet and you *must* ensure that your key for replication and/or running of the tool can support frequent tool calls to the model.

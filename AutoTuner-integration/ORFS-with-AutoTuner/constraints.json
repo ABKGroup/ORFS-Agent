@@ -1,0 +1,18 @@
+{
+  "CLK": {
+    "pdk_specific": true,
+    "asap7": {"type": "float", "range": [100.0, 10000.0]},
+    "sky130hd": {"type": "float", "range": [0.5, 15.0]}
+  },
+  "UTIL": {"type": "integer", "range": [20, 69]},
+  "TNS_End_Percent": {"type": "integer", "range": [0, 100]},
+  "GP_PAD": {"type": "integer", "range": [0, 3]},
+  "DP_PAD": {"type": "integer", "range": [0, 3]},
+  "DPO": {"type": "binary", "values": [0, 1]},
+  "PIN_ADJ": {"type": "float", "range": [0.1, 0.7]},
+  "UP_ADJ": {"type": "float", "range": [0.1, 0.7]},
+  "LB_ADDON": {"type": "float", "range": [0.00, 0.99]},
+  "HIER_SYNTH": {"type": "binary", "values": [0, 1]},
+  "CTS_CSIZE": {"type": "integer", "range": [10, 40]},
+  "CTS_CDIA": {"type": "integer", "range": [80, 120]}
+} 

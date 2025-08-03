@@ -1,0 +1,72 @@
+[
+    {
+        "CLK": 961.4694289907536,
+        "UTIL": 46,
+        "TNS_End_Percent": 84,
+        "GP_PAD": 1,
+        "DP_PAD": 0,
+        "DPO": 1,
+        "PIN_ADJ": 0.35222380829073474,
+        "UP_ADJ": 0.3832508574206076,
+        "LB_ADDON": 0.8258248485408837,
+        "HIER_SYNTH": 1,
+        "CTS_CSIZE": 11,
+        "CTS_CDIA": 109
+    },
+    {
+        "CLK": 4385.506248414069,
+        "UTIL": 61,
+        "TNS_End_Percent": 48,
+        "GP_PAD": 1,
+        "DP_PAD": 0,
+        "DPO": 0,
+        "PIN_ADJ": 0.3305579586802221,
+        "UP_ADJ": 0.14990714275011705,
+        "LB_ADDON": 0.8371692908082491,
+        "HIER_SYNTH": 0,
+        "CTS_CSIZE": 29,
+        "CTS_CDIA": 81
+    },
+    {
+        "CLK": 2578.8793247862955,
+        "UTIL": 24,
+        "TNS_End_Percent": 92,
+        "GP_PAD": 1,
+        "DP_PAD": 0,
+        "DPO": 1,
+        "PIN_ADJ": 0.3435702066430767,
+        "UP_ADJ": 0.5867801064874644,
+        "LB_ADDON": 0.9741504856481337,
+        "HIER_SYNTH": 1,
+        "CTS_CSIZE": 12,
+        "CTS_CDIA": 95
+    },
+    {
+        "CLK": 6672.3581104860195,
+        "UTIL": 27,
+        "TNS_End_Percent": 97,
+        "GP_PAD": 3,
+        "DP_PAD": 0,
+        "DPO": 0,
+        "PIN_ADJ": 0.34816697879569847,
+        "UP_ADJ": 0.60303105005538,
+        "LB_ADDON": 0.17276557878871948,
+        "HIER_SYNTH": 0,
+        "CTS_CSIZE": 10,
+        "CTS_CDIA": 81
+    },
+    {
+        "CLK": 100.0,
+        "UTIL": 69,
+        "TNS_End_Percent": 71,
+        "GP_PAD": 0,
+        "DP_PAD": 1,
+        "DPO": 1,
+        "PIN_ADJ": 0.3439470458480257,
+        "UP_ADJ": 0.4208161354668013,
+        "LB_ADDON": 0.99,
+        "HIER_SYNTH": 1,
+        "CTS_CSIZE": 37,
+        "CTS_CDIA": 120
+    }
+]

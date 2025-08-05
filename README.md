@@ -221,10 +221,10 @@ This work is based on the research paper:
 **ORFS-agent: Tool-Using Agents for Chip Design Optimization**  
 *Amur Ghose, Andrew B. Kahng, Sayak Kundu, and Zhiang Wang*  
 University of California San Diego  
-arXiv:2506.08332v1 [cs.AI] 12 Jun 2025  
+arXiv:2506.08332v1 [cs.AI] 12 Jun 2025 | MLCAD 2025
 Available at: https://arxiv.org/pdf/2506.08332
 
-## Additional versions
+## PLEASE READ CAREFULLY FOR REPLICATION, REPRODUCTION AND USAGE !
 
 For the purposes of replication or usage, you may be interested in using this as a flow within OR-AutoTuner, OpenROAD's official BO tool.
 

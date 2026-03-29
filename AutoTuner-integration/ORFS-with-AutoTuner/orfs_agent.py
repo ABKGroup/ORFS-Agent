@@ -191,15 +191,20 @@ class ORFSAgent:
         self.max_agent_calls = 30
         self.total_trials = 1000
         self.check_goal()
-        self.base_dir="/home/scratch/sakundu/MLCAD"
-        self.run_dir=f"{self.base_dir}/OBJ_{self.design}_{self.tech}_{self.goal}"
-        self.servers = ["rtl", "mleda", "mlcad", "cad"]
+        self.base_dir = os.environ.get("ORFS_AGENT_AUTOTUNER_BASE_DIR", "./runs")
+        self.run_dir = os.path.join(self.base_dir, f"OBJ_{self.design}_{self.tech}_{self.goal}")
+        server_list = os.environ.get("ORFS_AGENT_SERVER_LIST", "rtl,mleda,mlcad,cad")
+        self.servers = [server.strip() for server in server_list.split(",") if server.strip()]
+        if not self.servers:
+            self.servers = ["local"]
         self.run_id = 0
         self.pool = mp.Pool(processes=self.num_parallel_trials)
         # 
         ## Create the log directory if it doesn't exist
         if not os.path.exists(self.log_dir):
             os.makedirs(self.log_dir)
+        if not os.path.exists(self.run_dir):
+            os.makedirs(self.run_dir)
         
     def check_goal(self):
         if self.goal not in ["detailedroute__route__wirelength", "ECP_final", "Fractional_Loss_final"]:

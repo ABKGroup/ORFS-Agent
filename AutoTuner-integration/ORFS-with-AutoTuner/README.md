@@ -93,13 +93,13 @@ This script implements an autonomous LLM agent that interacts with the structure
     *   Notes on baseline configurations for various (circuit, PDK) pairs and their fixed/default settings.
     *   Heuristics on how parameters affect ECP and how to tune for different objectives.
 *   **`requirements.txt`**: Lists Python package dependencies (`anthropic`, `pandas`, `numpy`, `python-dotenv`, `scikit-optimize`, `scikit-learn`).
-*   **`.env` (example)**: Used to store the `ANTHROPIC_API_KEY`. Alternatively, a `anthropic_key.py` file can be used.
+*   **`.env` (example)**: Used to store the `ANTHROPIC_API_KEY`.
     ```
     ANTHROPIC_API_KEY="your_api_key_here"
     ```
-*   **`anthropic_key.py` (alternative for API key)**:
-    ```python
-    ANTHROPIC_API_KEY = "your_api_key_here"
+    Optional:
+    ```
+    ORFS_AGENT_MODEL="claude-sonnet-4-6"
     ```
 
 ## How to Run
@@ -120,10 +120,9 @@ This script implements an autonomous LLM agent that interacts with the structure
         ```bash
         python parser.py /path/to/your/openroad_runs_directory
         ```
-        (Adjust the path as needed. The script currently assumes the output path for `output.json` is hardcoded or relative to its location).
+        The parser writes `output.json` in its working directory by default.
 4.  **Set API Key:**
     *   Create a `.env` file in the project root and add your `ANTHROPIC_API_KEY`.
-    *   Alternatively, create `anthropic_key.py` with the key.
 5.  **Configure `constraints.json` and `prompt.md`:**
     *   Review and update `constraints.json` to accurately reflect the tunable parameters and their valid ranges/values for your specific use case and PDKs.
     *   Review and update `prompt.md` with relevant baseline information, heuristics, and parameter descriptions.
@@ -135,7 +134,7 @@ This script implements an autonomous LLM agent that interacts with the structure
     ```
     Example:
     ```bash
-    ./run_agent.sh aes asap7 ECP_final 5 15 claude-3-5-sonnet-20240620
+    ./run_agent.sh aes asap7 ECP_final 5 15 claude-sonnet-4-6
     ```
     Or directly using python:
     ```bash
@@ -150,18 +149,8 @@ Upon completion, the agent will typically produce:
 *   **`final_thought.json`**: The LLM's final summary of its analysis and findings.
 *   **`final_params.json`**: A JSON list of the hyperparameter configurations suggested by the final call to the Bayesian optimization tool.
 
-## Iterative Development Highlights
+## Notes
 
-The development of this agent involved several iterations and refinements:
-*   **Initial data parsing:** Evolved from CSV to a more flexible JSON output.
-*   **Parameter analysis:** Led to pruning of non-impactful parameters.
-*   **Calculated metrics:** Enhanced the dataset with derived ECP and Fractional Loss values.
-*   **Agent Tooling:** Incrementally built and refined the set of tools available to the LLM.
-*   **Bayesian Optimization:** Integrated `skopt` for intelligent suggestion generation, replacing an initial placeholder.
-*   **Prompt Engineering:** Significant effort was invested in crafting and iteratively refining the system prompt to guide the LLM's behavior, improve its analytical depth, manage its pacing, and help it understand the nuances of the Bayesian optimization tool.
-*   **Debugging:** Addressed various issues, including:
-    *   Correcting errors in Bayesian optimization data preparation and parameter handling (e.g., `KeyError: 'type'`, `ValueError: Not all points are within the bounds`).
-    *   Fixing tool dispatch logic in the agent's main loop.
-    *   Clarifying constraints handling for CTS parameters (allowing '1' in historical data but searching a different range).
-
-This iterative process has resulted in a more robust and intelligent agent capable of performing nuanced data analysis and providing data-driven hyperparameter suggestions. 
+*   Set `ORFS_AGENT_MODEL` if you want to pin the Anthropic model explicitly.
+*   Set `ORFS_AGENT_AUTOTUNER_BASE_DIR` if you want runs written somewhere other than `./runs`.
+*   Set `ORFS_AGENT_AUTOTUNER_LOG_ROOT` if you want Ray Tune outputs written somewhere other than `./ray_results`.

@@ -1,22 +1,24 @@
+import json
+import logging
+import os
+from functools import lru_cache
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
+import anthropic
+import joblib
 import numpy as np
-from typing import Dict, List, Tuple, Optional, Any, Union, Callable
+import optuna
+from agglomfuncs import dpp_select
 from inspectfuncs import inspect_data_distribution, inspect_data_structure
 from modelfuncs import handle_surrogate_data, expected_improvement, latin_hypercube, parse_llm_response
-from agglomfuncs import dpp_select
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler
-from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import Matern, ConstantKernel, RBF, RationalQuadratic, WhiteKernel, DotProduct
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.neural_network import MLPRegressor
-import anthropic
-from functools import lru_cache
-import logging
-import json
-from pathlib import Path
-import optuna
-from scipy.stats import norm
 from scipy.optimize import minimize
-import joblib
+from scipy.stats import norm
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import ConstantKernel, DotProduct, Matern, RBF, RationalQuadratic, WhiteKernel
+from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -268,7 +270,7 @@ class HardwareConstraintOptimizer:
         
         try:
             response = self.client.messages.create(
-                model="claude-3-sonnet-20240229",
+                model=os.environ.get("ORFS_AGENT_MODEL", "claude-sonnet-4-6"),
                 max_tokens=2048,
                 messages=[{
                     "role": "user", 

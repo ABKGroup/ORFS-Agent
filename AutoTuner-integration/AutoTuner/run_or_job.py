@@ -47,7 +47,7 @@ def extract_ppa_remote(log_dir: str, clk: float, server: str) -> Tuple[float, fl
     ref_dir=os.path.dirname(os.path.abspath(__file__))
     remote_script = f"{ref_dir}/extract_ppa_remote.py"
     large_num = sys.float_info.max
-    python_exe = "/home/tool/anaconda/envs/cluster/bin/python3.10"
+    python_exe = os.environ.get("ORFS_AGENT_REMOTE_PYTHON", "python3")
     command = f"ssh {server} '{python_exe} {remote_script} {log_dir} {clk}'"
     
     result = subprocess.run(command, shell=True, stdout=subprocess.PIPE,
@@ -129,8 +129,8 @@ def run_job(design:str, clk_period:float, util:float, ar:float, tech:str,
 if __name__ == "__main__":
     design=sys.argv[1]
     tech=sys.argv[2]
-    run_dir="/home/scratch/sakundu/TEST"
-    server="pdn"
+    run_dir=os.path.join(os.environ.get("ORFS_AGENT_AUTOTUNER_BASE_DIR", "./runs"), "TEST")
+    server=os.environ.get("ORFS_AGENT_SERVER", "pdn")
     cached_netlist=None
     
     clk_period=10.0

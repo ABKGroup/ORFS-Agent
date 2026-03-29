@@ -415,13 +415,14 @@ def get_optimization_prompt(pdk: str, circuit: str, goal: str, use_surrogate: bo
     should use the second person, and not the first person."""
     
     try:
-        openai_key = #PUT YOUR KEY HERE
+        openai_key = os.environ.get("OPENAI_API_KEY", "").strip()
         if not openai_key:
             raise ValueError("OPENAI_API_KEY environment variable not set")
-            
+
+        prompt_model = os.environ.get("ORFS_AGENT_PROMPT_MODEL", "gpt-4.1-mini")
         client = openai.OpenAI(api_key=openai_key)
         response = client.chat.completions.create(
-            model="o1-preview",
+            model=prompt_model,
             messages=[
                 {"role": "user", "content": system_message + "\n\n" + str(data)}
             ],

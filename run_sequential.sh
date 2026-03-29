@@ -13,6 +13,10 @@ iteration=$4
 
 # Get the absolute path to the script's directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=./runtime_paths.sh
+source "${SCRIPT_DIR}/runtime_paths.sh"
+orfs_agent_prepare_layout "$SCRIPT_DIR"
+cd "$SCRIPT_DIR"
 
 # Define CSV file with an absolute path
 csv_file="${SCRIPT_DIR}/designs/${platform}/${design}/${platform}_${design}.csv"
@@ -20,7 +24,7 @@ csv_file="${SCRIPT_DIR}/designs/${platform}/${design}/${platform}_${design}.csv"
 # Function to clean up old result dumps from previous experiments
 cleanup_old_result_dumps() {
     echo "Cleaning up result dumps from previous experiments..."
-    rm -rf ../result_dump_*
+    rm -rf "${SCRIPT_DIR}"/result_dump_*
 }
 
 # Function to generate initial random parameters from base config

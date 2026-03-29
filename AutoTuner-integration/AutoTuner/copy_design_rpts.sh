@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# Set the root of the search and the destination root
-SRC_ROOT="/home/scratch/sakundu/MLCAD"
-DEST_ROOT="/home/fetzfs_projects/rdf_2024/sakundu/Amur_ICML/AutoTuner/to_amur"  # <-- Change this to your desired destination
+set -euo pipefail
+
+SRC_ROOT="${1:-${SRC_ROOT:-./runs}}"
+DEST_ROOT="${2:-${DEST_ROOT:-./copied_reports}}"
+
+mkdir -p "$DEST_ROOT"
 
 # Find all directories matching the pattern
 find "$SRC_ROOT" -mindepth 5 -maxdepth 5 -type d | while read -r dir; do

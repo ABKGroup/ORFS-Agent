@@ -1,5 +1,11 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=./runtime_paths.sh
+source "${SCRIPT_DIR}/runtime_paths.sh"
+orfs_agent_prepare_layout "$SCRIPT_DIR"
+cd "$SCRIPT_DIR"
+
 # Ensure correct number of arguments
 if [ $# -ne 3 ]; then
     echo "Usage: $0 <platform> <design> <parallel_runs>"

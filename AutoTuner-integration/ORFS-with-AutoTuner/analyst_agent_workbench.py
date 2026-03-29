@@ -8,7 +8,7 @@ import os
 from dotenv import load_dotenv
 import anthropic # type: ignore
 import time # For retry delay
-import random # For placeholder BayesOpt, can be removed if BayesOpt is robust
+import random
 
 # For Bayesian Optimization
 from skopt import Optimizer
@@ -27,9 +27,8 @@ TOOL_STATE = {
 }
 
 # --- Tool Python Functions ---
-# Forward declaration for log_to_file_and_console, as it's defined in run_agent_workbench
-# but used by store_all_valid_runs_df. This is a bit of a hack for standalone functions.
-# A class-based approach for the agent would encapsulate this better.
+# Forward declaration for log_to_file_and_console, as it's defined in
+# run_agent_workbench but used by helper functions in this module.
 _log_func = print 
 
 def set_logger(logger_func):
@@ -501,7 +500,7 @@ ANTHROPIC_TOOL_SCHEMAS = [
                 },
                 "validation_data_query": {
                     "type": "string",
-                    "description": "Optional. A pandas query string to select a subset for validating the surrogate model's predictions. Currently a placeholder, no actual validation performed by this tool."
+                    "description": "Optional. A pandas query string to select a subset for validating surrogate-model predictions. Validation selection is reserved for future use."
                 }
             },
             "required": ["target_metric_to_minimize"]
@@ -516,7 +515,7 @@ def run_agent_workbench(main_df=None, circuit=None, pdk=None,
     parser.add_argument("circuit", type=str, help="Name of the circuit")
     parser.add_argument("pdk", type=str, help="Name of the PDK")
     parser.add_argument("optimization_goal", type=str, help="Optimization goal key from output.json")
-    parser.add_argument("--model_name", type=str, default="claude-sonnet-4-20250514", help="Anthropic model name to use.")
+    parser.add_argument("--model_name", type=str, default=os.environ.get("ORFS_AGENT_MODEL", "claude-sonnet-4-6"), help="Anthropic model name to use.")
     parser.add_argument("--max_agent_calls", type=int, default=30, help="Maximum number of calls to the agent.")
     parser.add_argument("--num_final_suggestions", type=int, default=5, help="Number of configurations for the BayesOpt tool to suggest in the final step.")
     
@@ -533,18 +532,10 @@ def run_agent_workbench(main_df=None, circuit=None, pdk=None,
     TOOL_STATE["num_final_suggestions"] = args.num_final_suggestions
     
     load_dotenv()
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not api_key:
-        try:
-            from anthropic_key import ANTHROPIC_API_KEY as direct_key # type: ignore
-            api_key = direct_key
-            print("INFO: Loaded ANTHROPIC_API_KEY from anthropic_key.py")
-        except (ImportError, AttributeError):
-            if "ANTHROPIC_API_KEY" not in os.environ: 
-                print("Error: ANTHROPIC_API_KEY not found in environment, .env file, or anthropic_key.py.")
-                return
-            else: 
-                api_key = os.environ["ANTHROPIC_API_KEY"]
+        print("Error: ANTHROPIC_API_KEY not found in environment or .env file.")
+        return
 
     try:
         client = anthropic.Anthropic(api_key=api_key)

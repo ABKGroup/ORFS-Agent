@@ -43,9 +43,8 @@ def parse_folder_name(folder_name):
                 # For now, assume last part is value if conversion failed.
                 params[key_candidate] = value_candidate_str 
         else:
-            # No underscore, consider it a flag or a key with an implicit value (e.g. True)
-            # For now, just store the part as a key with a placeholder.
-            # This might need adjustment based on actual folder naming conventions for such cases.
+            # No underscore, consider it a flag or a key with an implicit value.
+            # Preserve the key so the field remains visible in parsed output.
             params[part] = "FLAG_PARAM" # Or True, or handle as error/log
 
     # Rename TIMING_EFFORT to TNS_End_Percent if it exists

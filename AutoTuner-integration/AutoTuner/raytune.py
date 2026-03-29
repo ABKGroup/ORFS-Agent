@@ -216,8 +216,8 @@ class rayTune():
             'CTS_ECP': ppa[6],})
 
     def __call__(self, tech="ng45", obj="area"):
-        ## set run_directory where you want to run your autotuner job
-        run_dir=f"/home/scratch/sakundu/MLCAD/OBJ_{self.design}_{tech}_{obj}"
+        base_dir = os.environ.get("ORFS_AGENT_AUTOTUNER_BASE_DIR", "./runs")
+        run_dir = os.path.join(base_dir, f"OBJ_{self.design}_{tech}_{obj}")
         if not os.path.exists(run_dir):
             os.makedirs(run_dir)
             
@@ -235,9 +235,8 @@ class rayTune():
         scheduler = AsyncHyperBandScheduler(metric=obj, mode="min", max_t=14400)
         
         
-        # Profile a correct path for the log_dir
-        log_dir = f"/home/fetzfs_projects/rdf_2024/sakundu/Amur_ICML" \
-                 f"/AutoTunerLog/MLCAD/ray_results_{self.design}_{tech}_{obj}"
+        log_root = os.environ.get("ORFS_AGENT_AUTOTUNER_LOG_ROOT", "./ray_results")
+        log_dir = os.path.join(log_root, f"{self.design}_{tech}_{obj}")
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
             

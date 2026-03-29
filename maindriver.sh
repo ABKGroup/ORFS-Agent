@@ -1,5 +1,11 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=./runtime_paths.sh
+source "${SCRIPT_DIR}/runtime_paths.sh"
+orfs_agent_prepare_layout "$SCRIPT_DIR"
+cd "$SCRIPT_DIR"
+
 # Default values
 TOTAL_ITERS=6
 PARALLEL_RUNS=50
@@ -191,7 +197,7 @@ create_backup() {
     local platform=$1
     local design=$2
     local iteration=$3
-    local backup_dir="../result_dump_${iteration}"
+    local backup_dir="${SCRIPT_DIR}/result_dump_${iteration}"
     
     echo "Creating backup for iteration ${iteration}..."
     mkdir -p "$backup_dir"

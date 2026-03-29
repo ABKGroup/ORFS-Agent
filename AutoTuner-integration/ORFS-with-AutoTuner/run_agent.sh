@@ -11,11 +11,15 @@ CIRCUIT="aes"
 PDK="asap7"
 OPTIMIZATION_GOAL="ECP_final"
 
-# Check if .env file exists, if not, create a placeholder
+# Create a template `.env` file if needed
 if [ ! -f .env ]; then
-  echo "INFO: .env file not found. Creating a placeholder." 
-  echo "Please edit .env and add your ANTHROPIC_API_KEY." 
-  echo "ANTHROPIC_API_KEY=YOUR_ANTHROPIC_API_KEY_HERE" > .env
+  echo "INFO: .env file not found. Creating a template."
+  echo "INFO: Populate ANTHROPIC_API_KEY in .env before running the agent."
+  {
+    echo "ANTHROPIC_API_KEY=YOUR_ANTHROPIC_API_KEY_HERE"
+    echo "# Optional:"
+    echo "# ORFS_AGENT_MODEL=claude-sonnet-4-6"
+  } > .env
 fi
 
 # Check if output.json exists, if not, inform the user

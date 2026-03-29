@@ -6,17 +6,24 @@ INT_PARAM=1
 # Uncomment or add the design to run
 # ==============================================================================
 
-DESIGN_CONFIG=./designs/sky130hd/aes/config_$(INT_PARAM).mk
+#DESIGN_CONFIG=./designs/sky130hd/aes/config_$(INT_PARAM).mk
 #DESIGN_CONFIG=./designs/sky130hd/ibex/config_$(INT_PARAM).mk
 #DESIGN_CONFIG=./designs/sky130hd/jpeg/config_$(INT_PARAM).mk
 
-#DESIGN_CONFIG=./designs/asap7/aes/config_$(INT_PARAM).mk
+DESIGN_CONFIG=./designs/asap7/aes/config_$(INT_PARAM).mk
 #DESIGN_CONFIG=./designs/asap7/ibex/config_$(INT_PARAM).mk
 #DESIGN_CONFIG=./designs/asap7/jpeg/config_$(INT_PARAM).mk
 
 
 # Default design
 # DESIGN_CONFIG ?= ./designs/nangate45/gcd/config.mk
+
+# Many upstream design configs default `EQUIVALENCE_CHECK ?= 1`, which invokes
+# `eqy`. If `eqy` isn't installed, runs fail mid-flow. Disable equivalence
+# checking by default when `eqy` is unavailable (users can still force it on).
+ifeq ($(strip $(shell command -v eqy 2>/dev/null)),)
+export EQUIVALENCE_CHECK ?= 0
+endif
 
 # Include design and platform configuration before setting default options
 # in this file. This allows the DESIGN_CONFIG to set different defaults than

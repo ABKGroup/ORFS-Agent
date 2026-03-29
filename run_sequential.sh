@@ -204,7 +204,7 @@ if [ "$iteration" -eq 1 ]; then
 fi
 
 # Clean up and generate new files
-make clean_all
+make clean_all DESIGN_CONFIG="designs/${platform}/${design}/config.mk"
 generate_new_files
 
 echo "Sequential phase completed for iteration $iteration" 

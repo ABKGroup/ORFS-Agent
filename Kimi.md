@@ -12,5 +12,3 @@ For strict parsing, Kimi exposes a JSON Mode via `response_format={"type":"json_
 
 **Thinking traces.**
 For Kimi thinking-enabled models, such as `kimi-k2-thinking` and `kimi-k2.5`, Moonshot returns an explicit reasoning trace in a separate `reasoning_content` field. When using the OpenAI SDK, this field is not part of the stock message type and must be accessed via attribute checks, such as `hasattr` or `getattr`. In streaming mode, `reasoning_content` appears before `content`, and Moonshot notes that the combined token count of `reasoning_content` and `content` is bounded by `max_tokens`; we exploit this property when budgeting output length.
-
-**Reproducibility.**
